@@ -92,6 +92,7 @@ resource "aws_instance" "arm_server_private" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [resource.aws_security_group.arm_security_group.id]
   subnet_id              = aws_subnet.arm_subnet_private.id
+  private_ip = "192.168.1.18"
   user_data_base64 = base64encode(templatefile("./templates/user_data.tpl",
     {
       cluster_name = aws_ecs_cluster.arm_ecs_cluster.name

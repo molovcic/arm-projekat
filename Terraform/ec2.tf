@@ -18,6 +18,22 @@ data "aws_ami" "ubuntu_ami" {
   }
 }
 
+data "aws_ami" "ecs_optimized_amazon_linux_ami" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-ecs-hvm-*"]
+  }
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+  owners = ["591542846629"]
+}
 
 resource "aws_launch_template" "arm_launch_template" {
   name_prefix            = "arm_launch_template"
@@ -69,4 +85,23 @@ resource "aws_autoscaling_group" "arm_autoscaling_group" {
   depends_on = [
     aws_launch_template.arm_launch_template
   ]
+}
+resource "aws_instance" "arm_server_private" {
+  ami                    = data.aws_ami.ecs_optimized_amazon_linux_ami.id
+  iam_instance_profile   = data.aws_iam_instance_profile.lab_instance_profile.name
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [resource.aws_security_group.arm_security_group.id]
+  subnet_id              = aws_subnet.arm_subnet_private.id
+  user_data_base64 = base64encode(templatefile("./templates/user_data.tpl",
+    {
+      cluster_name = aws_ecs_cluster.arm_ecs_cluster.name
+  }))
+
+  root_block_device {
+    encrypted  = true
+    kms_key_id = resource.aws_kms_key.ebs_encryption_key.arn
+  }
+  tags = {
+    "Name" = "armz19378-PrivateServer"
+  }
 }

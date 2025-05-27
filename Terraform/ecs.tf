@@ -27,14 +27,7 @@ resource "aws_ecs_task_definition" "database_task" {
           },
         ]
         essential = true
-        healthCheck = {
-          command = [
-            "mysqladmin ping -h localhost",
-          ]
-          interval = 30
-          retries  = 10
-          timeout  = 20
-        }
+      
         image       = "mysql:5.7"
         memory      = 512
         mountPoints = []

@@ -3,6 +3,7 @@
 # Update system and install dependencies
 sudo apt update -y
 sudo apt install -y docker.io apache2
+sudo apt install -y mysql-server
 
 sleep 60
 

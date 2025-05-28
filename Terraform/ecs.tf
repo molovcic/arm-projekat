@@ -1,4 +1,3 @@
-
 resource "aws_ecs_cluster" "arm_ecs_cluster" {
 
   name = "arm_ecs_cluster"

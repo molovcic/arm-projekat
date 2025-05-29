@@ -7,12 +7,13 @@ sudo apt install -y mysql-server
 
 sudo curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
 sudo apt install -y gitlab-runner
+sudo apt install -y ufw
 
 # gitlab-runner register  --url https://gitlab.com  --token glrt-UR9qzeV76Poa03ZQxEy2qW86MQpwOjE1dWt2eAp0OjMKdTpncm5sbRg.01.1j0id439g
 # sudo usermod -aG docker gitlab-runner
 # sudo systemctl restart gitlab-runner
 
-sleep 60
+sleep 20
 
 sudo docker pull molovcic1/arm-projekat:latest
 sudo docker run -d -p 8080:3000 --name arm-projekat molovcic1/arm-projekat:latest
@@ -102,3 +103,8 @@ sudo a2dissite 000-default.conf
 sudo a2ensite docker-site.conf
 sudo systemctl restart apache2
 sudo systemctl enable apache2
+
+sudo ufw status
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 22/tcp

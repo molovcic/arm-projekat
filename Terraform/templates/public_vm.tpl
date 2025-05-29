@@ -5,6 +5,13 @@ sudo apt update -y
 sudo apt install -y docker.io apache2
 sudo apt install -y mysql-server
 
+sudo curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
+sudo apt install -y gitlab-runner
+
+# gitlab-runner register  --url https://gitlab.com  --token glrt-UR9qzeV76Poa03ZQxEy2qW86MQpwOjE1dWt2eAp0OjMKdTpncm5sbRg.01.1j0id439g
+# sudo usermod -aG docker gitlab-runner
+# sudo systemctl restart gitlab-runner
+
 sleep 60
 
 sudo docker pull molovcic1/arm-projekat:latest
